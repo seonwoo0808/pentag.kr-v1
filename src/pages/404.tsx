@@ -17,7 +17,11 @@ export default function E404Page() {
             >
               메인 페이지로
             </a>
-            <a href="#" className="text-sm font-semibold text-gray-900">
+            <a
+              href="https://github.com/seonwoo0808/pentag.kr-v1/issues/new"
+              target="_blank"
+              className="text-sm font-semibold text-gray-900"
+            >
               Issue 작성하기 <span aria-hidden="true">&rarr;</span>
             </a>
           </div>
