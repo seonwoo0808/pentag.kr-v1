@@ -129,9 +129,9 @@ export default function AboutPage() {
       <div className="bg-white py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto pb-20 lg:mx-0">
-            <h1 className="text-center text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+            <h2 className="text-center text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
               Since <span className="text-indigo-700">DEC 08 2022</span>
-            </h1>
+            </h2>
           </div>
           <dl className="grid grid-cols-1 gap-x-8 gap-y-16 text-center lg:grid-cols-3">
             {stats.map((stat) => (

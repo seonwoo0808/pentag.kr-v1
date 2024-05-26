@@ -41,11 +41,13 @@ export default function ContactPage() {
                 />
               </svg>
             </div>
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+            <h1 className="text-5xl font-bold tracking-wide text-gray-900">
+              Contact
+            </h1>
+            <p className="my-3 text-lg leading-8 text-gray-600">
               언제나 연락을 기다리고 있어요 :{")"}
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-600"></p>
-            <dl className="mt-10 space-y-4 text-base leading-7 text-gray-600">
+            </p>
+            <dl className="mt-12 space-y-4 text-base leading-7 text-gray-600">
               <div className="flex gap-x-4">
                 <dt className="flex-none">
                   <BuildingOffice2Icon

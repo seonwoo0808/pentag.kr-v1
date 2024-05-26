@@ -180,8 +180,17 @@ export default function PortfolioPage() {
     <>
       <div className="bg-white py-12 sm:py-24 xl:py-32">
         <NavbarElement />
+
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-16 sm:mt-3">
+          <h1 className="text-5xl font-bold tracking-wide text-gray-900 text-center">
+            Portfolio
+          </h1>
+          <p className="mt-6 text-lg leading-8 text-gray-600 text-center">
+            저의 프로젝트, 수상, 자격증을 소개합니다
+          </p>
+        </div>
         <div
-          className="mx-auto max-w-7xl pt-12 px-6 pb-10 lg:px-8"
+          className="mx-auto max-w-7xl mt-12 pt-10 pb-24 sm:py-10 px-6 lg:px-8 border border-gray-200 rounded-lg shadow-lg bg-gray-50"
           id="projects"
         >
           <div className="mx-auto max-w-2xl text-center">
@@ -215,7 +224,7 @@ export default function PortfolioPage() {
             </nav>
           </div>
 
-          <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-32 lg:mx-0 lg:max-w-none xl:grid-cols-3 lg:grid-cols-2 mb-12">
+          <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-32 lg:mx-0 lg:max-w-none xl:grid-cols-3 lg:grid-cols-2 mb-12 md:mb-36 lg:mb-12">
             {projects.map((post) =>
               post.collab === (currentTab === tabs[1]) ||
               currentTab === tabs[0] ? (
@@ -237,7 +246,7 @@ export default function PortfolioPage() {
                         {post.category.map((category) => (
                           <span
                             key={category}
-                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800"
                           >
                             {category}
                           </span>
@@ -260,11 +269,11 @@ export default function PortfolioPage() {
                         {post.date}
                       </time>
                       {post.collab == true ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800">
                           협업
                         </span>
                       ) : (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800">
                           개인
                         </span>
                       )}
@@ -275,8 +284,10 @@ export default function PortfolioPage() {
             )}
           </div>
         </div>
-        <hr className="mx-auto max-w-7xl border-t border-gray-200 sm:hidden mt-8" />
-        <div className="mx-auto max-w-7xl px-6 pt-20  lg:px-8" id="awards">
+        <div
+          className="mx-auto max-w-7xl mt-12 pt-10 pb-24 sm:pb-16 px-6 lg:px-8 xl:px-24 border border-gray-200 rounded-lg shadow-lg bg-gray-50"
+          id="awards"
+        >
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               Awards
@@ -295,7 +306,7 @@ export default function PortfolioPage() {
               .map((item) => (
                 <article
                   key={item.id}
-                  className="flex flex-col items-start justify-between border border-gray-200 rounded-lg p-6"
+                  className="flex flex-col items-start justify-between border border-gray-200 bg-white rounded-lg p-6"
                 >
                   <div className="max-w-xl">
                     <div className="flex items-center gap-x-4 text-xs">
@@ -304,13 +315,13 @@ export default function PortfolioPage() {
                       </time>
                       <a
                         href="#"
-                        className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600"
+                        className="relative z-10 rounded-full bg-gray-100 px-3 py-1.5 font-medium text-gray-600"
                       >
                         {item.host}
                       </a>
                     </div>
                     <div className="group relative">
-                      <h3 className="my-3 text-md sm:text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
+                      <h3 className="my-3 text-md sm:text-lg font-semibold leading-6 text-gray-900">
                         <span className="absolute inset-0" />
                         {item.title}
                       </h3>
@@ -318,7 +329,7 @@ export default function PortfolioPage() {
                         {item.tag.map((category) => (
                           <span
                             key={category}
-                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+                            className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
                           >
                             {category}
                           </span>
@@ -333,8 +344,10 @@ export default function PortfolioPage() {
               ))}
           </div>
         </div>
-        <hr className="mx-auto max-w-7xl border-t border-gray-200 mt-8 sm:hidden" />
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8" id="license">
+        <div
+          className="mx-auto max-w-7xl mt-12 pt-10 pb-24 sm:py-10 px-6 lg:px-8 xl:px-24 border border-gray-200 rounded-lg shadow-lg bg-gray-50"
+          id="license"
+        >
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               License
@@ -363,7 +376,7 @@ export default function PortfolioPage() {
                           </p>
                         ))}
                       </div>
-                      <p className="text-gray-500 text-sm inline-flex items-center pl-6 py-2 sm:block hidden">
+                      <p className="text-gray-500 text-xs inline-flex items-center pl-6 py-2 sm:block hidden lg:text-sm">
                         {item.ownedBy} 주관
                       </p>
                     </div>
