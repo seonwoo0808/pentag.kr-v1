@@ -55,6 +55,7 @@ export default function ContactPage() {
       });
       if (resp.status == 200) {
         window.location.href = "/contact/success";
+        return;
       }
       throw new Error(resp.statusText);
     } catch (e) {
