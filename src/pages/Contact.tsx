@@ -4,8 +4,68 @@ import DiscordIcon from "../assets/discord-outline.svg?react";
 import LinkedinIcon from "../assets/linkedin-rounded.svg?react";
 import NavbarElement from "../components/Navbar";
 import DropdownSelectElement from "../components/form/DropdownSelect";
+import { useRef, useState } from "react";
+import {
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  Transition,
+  TransitionChild,
+} from "@headlessui/react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import axios from "axios";
 
 export default function ContactPage() {
+  const [captchaOpen, setCaptchaOpen] = useState(false);
+  const [category, setCategory] = useState(0);
+  const [captchaSuccess, setCaptchaSuccess] = useState(false);
+  const firstNameRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
+  const messageRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleSubmit = () => {
+    // check is value is empty
+    if (
+      firstNameRef.current?.value == "" ||
+      lastNameRef.current?.value == "" ||
+      emailRef.current?.value == "" ||
+      phoneRef.current?.value == "" ||
+      messageRef.current?.value == ""
+    ) {
+      alert("Please fill in all the fields");
+      return;
+    }
+    setCaptchaOpen(true);
+  };
+
+  const submitForm = async (token: string) => {
+    // send form data to server
+    try {
+      const resp = await axios.post(import.meta.env.VITE_API_URL + "/contact", {
+        firstName: firstNameRef.current?.value,
+        lastName: lastNameRef.current?.value,
+        email: emailRef.current?.value,
+        phone: phoneRef.current?.value,
+        category: category,
+        message: messageRef.current?.value,
+        token: token,
+      });
+      if (resp.status == 200) {
+        window.location.href = "/contact/success";
+      }
+      throw new Error(resp.statusText);
+    } catch (e) {
+      setCaptchaSuccess(false);
+      setCaptchaOpen(false);
+      alert(
+        "메시지를 전송하던 중 에러가 발생했습니다. 잠시뒤 다시 시도해주세요"
+      );
+    }
+  };
+
   return (
     <div className="relative isolate bg-white h-full">
       <NavbarElement />
@@ -121,6 +181,7 @@ export default function ContactPage() {
                 </label>
                 <div className="mt-2.5">
                   <input
+                    ref={firstNameRef}
                     type="text"
                     name="first-name"
                     id="first-name"
@@ -138,6 +199,7 @@ export default function ContactPage() {
                 </label>
                 <div className="mt-2.5">
                   <input
+                    ref={lastNameRef}
                     type="text"
                     name="last-name"
                     id="last-name"
@@ -155,6 +217,8 @@ export default function ContactPage() {
                 </label>
                 <div className="mt-2.5">
                   <input
+                    placeholder="해당 이메일로 사본이 발송됩니다"
+                    ref={emailRef}
                     type="email"
                     name="email"
                     id="email"
@@ -172,6 +236,7 @@ export default function ContactPage() {
                 </label>
                 <div className="mt-2.5">
                   <input
+                    ref={phoneRef}
                     type="tel"
                     name="phone-number"
                     id="phone-number"
@@ -189,6 +254,7 @@ export default function ContactPage() {
                 </label>
                 <DropdownSelectElement
                   name="category"
+                  stateHandler={setCategory}
                   selection={[
                     { id: 0, name: "협업 관련(Collaboration)" },
                     { id: 1, name: "채용 관련(Hiring)" },
@@ -206,6 +272,7 @@ export default function ContactPage() {
                 </label>
                 <div className="mt-2.5">
                   <textarea
+                    ref={messageRef}
                     name="message"
                     id="message"
                     rows={4}
@@ -217,7 +284,8 @@ export default function ContactPage() {
             </div>
             <div className="mt-8 flex justify-end lg:mt-4">
               <button
-                type="submit"
+                type="button"
+                onClick={() => handleSubmit()}
                 className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Send message
@@ -226,6 +294,110 @@ export default function ContactPage() {
           </div>
         </form>
       </div>
+      <Transition show={captchaOpen}>
+        <Dialog
+          className="relative z-10"
+          onClose={() => {
+            if (!captchaSuccess) {
+              setCaptchaOpen(false);
+            }
+          }}
+        >
+          <TransitionChild
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          </TransitionChild>
+
+          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+              <TransitionChild
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                enterTo="opacity-100 translate-y-0 sm:scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              >
+                <DialogPanel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                  <div>
+                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+                      <MagnifyingGlassIcon
+                        className="h-6 w-6 text-green-600"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <div className="mt-3 text-center sm:mt-5">
+                      <DialogTitle
+                        as="h3"
+                        className="text-base font-semibold leading-6 text-gray-900"
+                      >
+                        Are you a robot?
+                      </DialogTitle>
+                      <div className="mt-2">
+                        <p className="text-sm text-gray-500">
+                          다음의 자동화 방지를 위한 검증을 완료해주세요
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="my-5 sm:my-6 grid place-items-center">
+                    <HCaptcha
+                      sitekey={import.meta.env.VITE_HCAPTCHA_SITEKEY}
+                      onVerify={(token) => {
+                        setCaptchaSuccess(true);
+                        submitForm(token);
+                      }}
+                    />
+                  </div>
+
+                  {captchaSuccess ? (
+                    // spinner animation
+                    <button
+                      type="button"
+                      className="bg-indigo-500 flex justify-center w-full rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm"
+                      disabled
+                    >
+                      <svg
+                        className="animate-spin h-5 w-5 mr-3 ..."
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-1.647z"
+                        />
+                      </svg>
+                      처리중...
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      onClick={() => setCaptchaOpen(false)}
+                    >
+                      Cancle
+                    </button>
+                  )}
+                </DialogPanel>
+              </TransitionChild>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
     </div>
   );
 }

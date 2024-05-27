@@ -9,6 +9,7 @@ import "./index.css";
 import AboutPage from "./pages/About.tsx";
 import ContactPage from "./pages/Contact.tsx";
 import PortfolioPage from "./pages/Portfolio.tsx";
+import ContactSuccessPage from "./pages/ContactSuccess.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         {/* <Route path="/login" element={<div>Login page</div>} /> */}
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/contact/success" element={<ContactSuccessPage />} />
         <Route path="/portfolio" element={<PortfolioPage />} />
 
         <Route path="*" element={<E404Page />} />

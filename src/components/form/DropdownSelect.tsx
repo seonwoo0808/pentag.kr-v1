@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Listbox,
   ListboxButton,
@@ -16,6 +16,7 @@ export default function DropdownSelectElement(props: {
   name?: string;
   selection: { id: number; name: string }[];
   defaultSelection?: number;
+  stateHandler: React.Dispatch<React.SetStateAction<number>>;
 }) {
   const [selected, setSelected] = useState(
     props.defaultSelection == undefined
@@ -24,7 +25,13 @@ export default function DropdownSelectElement(props: {
   );
 
   return (
-    <Listbox value={selected} onChange={setSelected}>
+    <Listbox
+      value={selected}
+      onChange={(value: { id: number; name: string }) => {
+        setSelected(value);
+        props.stateHandler(value.id);
+      }}
+    >
       {({ open }) => (
         <>
           <div className="relative mt-2">
