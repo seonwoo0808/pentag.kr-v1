@@ -13,6 +13,7 @@ import SurfingImage from "../assets/projects/Surfing.png";
 import ClastImage from "../assets/projects/Clast.png";
 import ItnunImage from "../assets/projects/Itnun.png";
 import KSHostingImage from "../assets/projects/KSHosting.png";
+import NotificatioElement from "../components/Notification";
 
 const tabs = ["전체 (All)", "협업 (Collab)", "개인 (Personal)"];
 
@@ -38,7 +39,7 @@ const projects = [
     date: "2023/03/03 → 2023/03/24",
     collab: true,
     imgURL: SurfingImage,
-    href: "/project/asd",
+    href: null,
   },
   {
     id: 3,
@@ -49,7 +50,7 @@ const projects = [
     date: "2022/05/15 → 2022/10/29",
     collab: true,
     imgURL: ASDImage,
-    href: "/project/asd",
+    href: null,
   },
   {
     id: 4,
@@ -60,7 +61,7 @@ const projects = [
     date: "2022/08/02 → 2023/04/04",
     collab: true,
     imgURL: ItnunImage,
-    href: "/project/asd",
+    href: null,
   },
   {
     id: 5,
@@ -71,7 +72,7 @@ const projects = [
     date: "2012/12/01 → 2022/10/14",
     collab: false,
     imgURL: KSHostingImage,
-    href: "/project/asd",
+    href: null,
   },
 ];
 
@@ -159,6 +160,7 @@ const QuickMenuElement = [
 export default function PortfolioPage() {
   const [currentTab, setCurrentTab] = useState(tabs[0]);
   const [currentMenu, setCurrentMenu] = useState(QuickMenuElement[0].id);
+  const [notfoundError, setNotfoundError] = useState(false);
   useEffect(() => {
     window.addEventListener("scroll", () => {
       if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
@@ -180,6 +182,13 @@ export default function PortfolioPage() {
     <>
       <div className="bg-white py-12 sm:py-24 xl:py-32">
         <NavbarElement />
+        <NotificatioElement
+          title="해당 페이지는 아직 제작 중입니다."
+          message="죄송합니다. 해당 페이지는 아직 제작 중입니다. 빠른 시일 내에 완성하도록 하겠습니다."
+          type="info"
+          show={notfoundError}
+          setShow={setNotfoundError}
+        />
 
         <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-16 sm:mt-3">
           <h1 className="text-5xl font-bold tracking-wide text-gray-900 text-center">
@@ -232,53 +241,67 @@ export default function PortfolioPage() {
                   key={post.id}
                   className="flex flex-col items-start justify-between h-[300px] mb-8 sm:mb-32 md:mb-32 xl:mb-20"
                 >
-                  <div className="relative w-full">
-                    <img
-                      src={post.imgURL}
-                      alt=""
-                      className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover"
-                    />
-                    <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
-                  </div>
-                  <div className="max-w-xl">
-                    <div className="mt-8 flex items-center gap-x-4 text-xs">
-                      <div className="flex gap-2">
-                        {post.category.map((category) => (
-                          <span
-                            key={category}
-                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800"
-                          >
-                            {category}
+                  <button
+                    onClick={() => {
+                      if (post.href != null) {
+                        window.open(post.href, "_blank");
+                      } else {
+                        setNotfoundError(true);
+                        // wait 15sec
+                        new Promise((resolve) =>
+                          setTimeout(resolve, 10000)
+                        ).then(() => {
+                          setNotfoundError(false);
+                        });
+                      }
+                    }}
+                    className="transition ease-in-out hover:-translate-y-1 hover:scale-105 duration-300"
+                  >
+                    <div className="relative w-full">
+                      <img
+                        src={post.imgURL}
+                        alt=""
+                        className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover"
+                      />
+                      <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
+                    </div>
+                    <div className="max-w-xl">
+                      <div className="mt-8 flex items-center gap-x-4 text-xs">
+                        <div className="flex gap-2">
+                          {post.category.map((category) => (
+                            <span
+                              key={category}
+                              className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800"
+                            >
+                              {category}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="group relative absolute inset-0 text-left">
+                        <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
+                          {post.title}
+                        </h3>
+                        <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
+                          {post.description}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-4 mt-6">
+                        <time dateTime={post.date} className="text-gray-500">
+                          {post.date}
+                        </time>
+                        {post.collab == true ? (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800">
+                            협업
                           </span>
-                        ))}
+                        ) : (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800">
+                            개인
+                          </span>
+                        )}
                       </div>
                     </div>
-                    <div className="group relative">
-                      <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
-                        <a href={post.href}>
-                          <span className="absolute inset-0" />
-                          {post.title}
-                        </a>
-                      </h3>
-                      <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
-                        {post.description}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-4 mt-6">
-                      <time dateTime={post.date} className="text-gray-500">
-                        {post.date}
-                      </time>
-                      {post.collab == true ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800">
-                          협업
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800">
-                          개인
-                        </span>
-                      )}
-                    </div>
-                  </div>
+                  </button>
                 </article>
               ) : null
             )}
