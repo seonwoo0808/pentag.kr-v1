@@ -26,7 +26,7 @@ const projects = [
     date: "2022/05/15 → 유지보수 중",
     collab: false,
     imgURL: ClastImage,
-    href: "/project/asd",
+    href: "https://blog.pentag.kr/blog/Portfolios/clast",
   },
 
   {
