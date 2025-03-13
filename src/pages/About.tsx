@@ -27,7 +27,7 @@ const features = [
   },
   {
     key: "Academic",
-    value: "한국디지털미디어고 21기 웹프로그래밍과 재학",
+    value: "인하대학교 경영학과 25학번 재학중",
     icon: AcademicCapIcon,
   },
 ];
